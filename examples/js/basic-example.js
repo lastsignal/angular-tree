@@ -81,8 +81,36 @@
 								'title': 'node3.1',
 							}
 						]
+					},
+					{
+						'id': 4,
+						'title': 'node4',
+						'collapsible': false,
 					}
 				];
-			}
+
+				$scope.markNoDrag = function (obj, level) {
+					if (!obj)
+						return;
+					console.debug(level);
+					if (level > 0)
+						obj.nodrag = true;
+
+					if (!obj.nodes) return;
+
+					for (var idx = 0; idx < obj.nodes.length; idx++) {
+						$scope.markNoDrag(obj.nodes[idx], level + 1);
+					}
+				}
+
+
+				//add deletablity to the root objects only
+				for (var i = 0; i< $scope.data.length; i++) {
+					$scope.data[i].deletable = true;
+
+					$scope.markNoDrag($scope.data[i], 0);
+				}
+			console.debug($scope.data);
+		}
 		]);
 }());
