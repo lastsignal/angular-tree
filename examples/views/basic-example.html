@@ -12,7 +12,7 @@
         <btn class="pull-right btn btn-link btn-xs" data-nodrag ng-click="remove(this)">
             <span class="glyphicon glyphicon-remove text-danger"></span>
         </btn>
-        <btn class="pull-right btn btn-link btn-xs" data-nodrag ng-click="newSubItem(this)">
+        <btn class="pull-right btn btn-link btn-xs" data-nodrag ng-click="newSubItem(this)" ng-show="node.collapsible">
             <span class="glyphicon glyphicon-plus text-info"></span>
         </btn>
     </div>
