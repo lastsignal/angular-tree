@@ -26,12 +26,18 @@
                     });
                 };
 
-                $scope.collapseAll = function() {
-                    $scope.$broadcast('collapseAll');
+                var getRootNodesScope = function () {
+                    return angular.element(document.getElementById("tree-root")).scope();
+                };
+
+                $scope.collapseAll = function () {
+                    var scope = getRootNodesScope();
+                    scope.collapseAll();
                 };
 
                 $scope.expandAll = function() {
-                    $scope.$broadcast('expandAll');
+                    var scope = getRootNodesScope();
+                    scope.expandAll();
                 };
 
                 $scope.data = [
