@@ -1,50 +1,81 @@
 <!-- Nested node template -->
 <script type="text/ng-template" id="nodes_renderer.html">
-    <div ui-tree-handle class="tree-node tree-node-content" ng-class="{collapsible: node.nodes && node.nodes.length > 0}">
-        <button class="btn btn-link btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)">
-            <span class="glyphicon"
-                  ng-class="{
-          'glyphicon-chevron-right': collapsed,
-          'glyphicon-chevron-down': !collapsed
-        }"></span>
-        </button>
-        {{node.title}}
-        <btn class="pull-right btn btn-link btn-xs" data-nodrag ng-click="remove(this)">
-            <span class="glyphicon glyphicon-remove text-danger"></span>
-        </btn>
-        <btn class="pull-right btn btn-link btn-xs" data-nodrag ng-click="newSubItem(this)">
-            <span class="glyphicon glyphicon-plus text-info"></span>
-        </btn>
-    </div>
-  <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
-    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
-    </li>
-  </ol>
+	<div ui-tree-handle class="tree-node tree-node-content" ng-class="{collapsible: node.collapsible}" ng-attr-data-nodrag="{{node.nodrag}}">
+		<button class="btn btn-link btn-xs" ng-if="node.collapsible" data-nodrag ng-click="toggle(this)">
+			<span class="glyphicon"
+				  ng-class="{
+		  'glyphicon-chevron-right': collapsed,
+		  'glyphicon-chevron-down': !collapsed
+		}"></span>
+		</button>
+		{{node.title}}
+		<btn class="pull-right btn btn-link btn-xs" data-nodrag ng-click="remove(this)" ng-show="node.deletable">
+			<span class="glyphicon glyphicon-remove text-danger"></span>
+		</btn>
+	</div>
+	<ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}" data-nodrop-enabled>
+		<li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+		</li>
+	</ol>
 </script>
 
 <div class="row">
-    <button class="btn btn-default" ng-click="expandAll()">
-        <span class="fa fa-angle-double-down"></span>
-    </button>
-    <button class="btn btn-default" ng-click="collapseAll()">
-        <span class="fa fa-angle-double-right"></span>
-    </button>
-</div>
-<div class="row">
-  <div class="col-sm-6">
-    <div ui-tree id="tree-root">
-      <ol ui-tree-nodes ng-model="data">
-        <li ng-repeat="node in data" ui-tree-node ng-include="'nodes_renderer.html'"></li>
-      </ol>
-    </div>
-  </div>
+	<div class="form-horizontal">
+		<div class="form-group">
+			<label for="aggregateName" class="col-sm-2 control-label">Aggregate Name</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="aggregateName" placeholder="aggregate name" ng-model="aggregate.aggregateName">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="aggregateCode" class="col-sm-2 control-label">Aggregate Code</label>
+			<div class="col-sm-4">
+				<input type="text" class="form-control" id="aggregateCode" placeholder="aggregate code" ng-model="aggregate.aggregateCode">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="fromDate" class="col-sm-2 control-label">From Date</label>
+			<div class="col-sm-4">
+				<input id="fromDate" class="form-control" type="datetime" placeholder="lower bound" 
+					   date-time ng-model="aggregate.fromDate" format="yyyy-MM-dd" max-view="date" min-view="date" auto-close="true">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="toDate" class="col-sm-2 control-label">To Date</label>
+			<div class="col-sm-4">
+				<input id="toDate" class="form-control" type="datetime" placeholder="upper bound"
+					   date-time ng-model="aggregate.toDate" format="yyyy-MM-dd" max-view="date" min-view="date" auto-close="true">
+			</div>
+		</div>
 
-  <div class="col-sm-6">
-    <div class="info">
-      {{info}}
-    </div>
-  </div>
+		
+
+	</div>
 </div>
+
 <div class="row">
-    <button class="btn btn-default"><span class="glyphicon glyphicon-plus text-info"></span></button>
+	<span class="btn btn-default fa fa-angle-double-down fa-2x" ng-click="expandAll()"></span>
+	<span class="btn btn-default fa fa-angle-double-right fa-2x" ng-click="collapseAll()"></span>
 </div>
+
+<div class="row">
+	<div class="col-sm-6">
+		<div ui-tree="options" id="tree-root">
+			<ol ui-tree-nodes ng-model="aggregate.nodes">
+				<li ng-repeat="node in aggregate.nodes" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+			</ol>
+		</div>
+		<div class="row">
+			<span class="btn btn-default fa fa-plus fa-2x"></span>
+		</div>
+
+	</div>
+
+	<div class="col-sm-6">
+		<pre class="code">
+	  {{aggregate | json}}
+	</pre>
+
+	</div>
+</div>
+
